@@ -252,18 +252,6 @@ function Navbar() {
           </div>
         </div>
       )}
-      <div className="text-white">
-        {session ? (
-          <>
-            Signed in as {session?.user?.email},
-            <button onClick={() => signOut()}>Sign out</button>{" "}
-          </>
-        ) : (
-          <>
-            Not signed in ,<button onClick={() => signIn()}>Sign in</button>
-          </>
-        )}
-      </div>
     </nav>
   );
 }
