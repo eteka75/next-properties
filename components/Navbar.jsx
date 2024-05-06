@@ -23,6 +23,8 @@ function Navbar() {
     setAuthProviders();
   }, []);
 
+  const profileImage = session?.user?.image;
+
   console.log("CLIENT_FETCH_ERROR", providers);
   return (
     <nav className="bg-blue-700 border-b border-blue-500">
@@ -149,6 +151,7 @@ function Navbar() {
                   {/* <!-- Replace with the actual number of notifications --> */}
                 </span>
               </Link>
+
               {/* <!-- Profile dropdown button --> */}
               <div className="relative ml-3">
                 <div>
@@ -164,8 +167,11 @@ function Navbar() {
                     <span className="sr-only">Open user menu</span>
                     <Image
                       className="h-8 w-8 rounded-full"
-                      src={profileDefault}
-                      alt=""
+                      src={profileImage || profileDefault}
+                      alt="user"
+                      sizes={"40px"}
+                      height={40}
+                      width={40}
                     />
                   </button>
                 </div>
@@ -179,34 +185,39 @@ function Navbar() {
                     aria-orientation="vertical"
                     aria-labelledby="user-menu-button"
                     tabIndex="-1"
+                    onClick={() => setProfileMenuOpen(false)}
                   >
-                    <a
-                      href="/profile.html"
+                    <Link
+                      href="/profile"
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
                       tabIndex="-1"
                       id="user-menu-item-0"
+                      onClick={() => setProfileMenuOpen(false)}
                     >
                       Your Profile
-                    </a>
-                    <a
-                      href="saved-properties.html"
+                    </Link>
+                    <Link
+                      href="properties/saved"
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
                       tabIndex="-1"
                       id="user-menu-item-2"
                     >
                       Saved Properties
-                    </a>
-                    <a
-                      href="#"
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        signOut();
+                      }}
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
                       tabIndex="-1"
                       id="user-menu-item-2"
                     >
                       Sign Out
-                    </a>
+                    </button>
                   </div>
                 )}
               </div>
@@ -220,9 +231,9 @@ function Navbar() {
           <div className="space-y-1 px-2 pb-3 pt-2">
             <Link
               href="/"
-              className={`${
-                pathname === "/" ? "bg-gray-900" : ""
-              } text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium`}
+              className={`${pathname === "/" ? "bg-gray-900" : ""}
+               text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium`}
+              onClick={() => setMobileMenuOpen(false)}
             >
               Home
             </Link>
@@ -231,6 +242,7 @@ function Navbar() {
               className={`${
                 pathname === "/properties" ? "bg-gray-900" : ""
               } text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium`}
+              onClick={() => setMobileMenuOpen(false)}
             >
               Properties
             </Link>
@@ -239,12 +251,17 @@ function Navbar() {
               className={`${
                 pathname === "/property/add" ? "bg-gray-900" : ""
               } text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium`}
+              onClick={() => setMobileMenuOpen(false)}
             >
               Add Property
             </Link>
             {providers &&
               Object.values(providers).map((provider, index) => (
-                <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4">
+                <button
+                  key={index}
+                  onClick={() => signIn(provider?.id)}
+                  className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4"
+                >
                   <FaGoogle className="text-white mr-2" />
                   <span>Login or Register</span>
                 </button>

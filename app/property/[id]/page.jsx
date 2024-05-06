@@ -8,6 +8,7 @@ import Link from "next/link";
 import PropertyDetails from "@/components/PropertyDetails";
 import { FaArrowLeft, FaBookmark, FaShare, FaShareAlt } from "react-icons/fa";
 import Spinner from "@/components/Spinner";
+import { revalidatePath } from "next/cache";
 
 const PropertyPage = async () => {
   const { id } = useParams();
@@ -23,6 +24,7 @@ const PropertyPage = async () => {
       const property = await fetchSingleProperty(id);
       //console.log("==================", getproperty);
       setProperty(property);
+      //revalidatePath();
     } catch (error) {
       console.log("Error fetching property : ", error);
     } finally {
@@ -31,8 +33,10 @@ const PropertyPage = async () => {
   };
 
   useEffect(() => {
-    FetchPropertyData();
-  }, []);
+    if (property === null) {
+      FetchPropertyData();
+    }
+  }, [id, property]);
 
   if (!property && !loading) {
     return (

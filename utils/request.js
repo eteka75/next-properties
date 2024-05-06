@@ -6,12 +6,14 @@ async function fetchProperties() {
       return;
     }
     let uri = `${apiDomaine}/properties`;
-    const response = await fetch(uri);
+    const response = await fetch(
+      uri
+      //{ cache: "no-cache" }
+    );
     const responseBody = await response.json();
 
     if (!response.ok) {
       throw new Error("Failed to load data");
-      return;
     }
     return responseBody;
   } catch (error) {
