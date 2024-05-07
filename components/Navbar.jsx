@@ -255,7 +255,8 @@ function Navbar() {
             >
               Add Property
             </Link>
-            {providers &&
+            {!session &&
+              providers &&
               Object.values(providers).map((provider, index) => (
                 <button
                   key={index}

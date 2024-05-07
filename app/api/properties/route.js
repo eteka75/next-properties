@@ -10,9 +10,7 @@ export const GET = async (request) => {
     await connecteDB();
     const properties = await Property.find({});
 
-    return new Response.json(properties, {
-      status: 200,
-    });
+    return new Response.json(properties);
   } catch (error) {
     //console.log("ERROOOORRRRR", error);
     return new Response("Sommething was wrong !", { status: 500 });
@@ -22,13 +20,14 @@ export const GET = async (request) => {
 export const POST = async (request) => {
   try {
     connecteDB();
-    const session = getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
+
     if (!session) {
       throw new Response("Unauthorized !", { status: 401 });
     }
 
-    console.log("USER", session);
     const userId = session.user.id;
+    console.log("USER", session.user);
     const formDatas = await request?.formData();
     const amenities = formDatas.getAll("amenities");
     const images = formDatas
