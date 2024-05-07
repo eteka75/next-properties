@@ -81,6 +81,13 @@ export const POST = async (request) => {
           folder: "propertypulse",
         }
       );
+      // const result = await cloudinary.uploader.upload(
+      //   `data:image/png;bas64,${imageBase64}`,
+      //   { public_id: "olympic_flag" },
+      //   function (error, result) {
+      //     console.log(result);
+      //   }
+      // );
       //return new Response(`data:image/png;bas64,${imageBase64}`);
       imageUplaodPromises.push(result?.secure_url);
 
@@ -99,6 +106,9 @@ export const POST = async (request) => {
     // console.log(propertyData, sessionUser);
     //return new Response(JSON.stringify({ message: "Succès" }, { status: 200 }));
   } catch (error) {
-    return new Response("Fail to add property / " + error, { status: 500 });
+    console.log(error);
+    return new Response("Fail to add property / " + error.toString(), {
+      status: 500,
+    });
   }
 };
