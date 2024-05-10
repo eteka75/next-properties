@@ -16,9 +16,8 @@ function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    signOut();
     const setAuthProviders = async () => {
-      //const res = await getProviders();
+      const res = await getProviders();
       setProviders(res);
     };
     setAuthProviders();

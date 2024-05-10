@@ -12,9 +12,9 @@ export const GET = async (request) => {
     await connecteDB();
     const properties = await Property.find({});
 
-    return new Response.json(properties);
+    return  Response.json(properties);
   } catch (error) {
-    return new Response("Sommething was wrong !", { status: 500 });
+    return  Response("Sommething was wrong !", { status: 500 });
   }
 };
 
@@ -22,9 +22,9 @@ export const POST = async (request) => {
   try {
     connecteDB();
     const sessionUser = await getSessionUser();
-
+    console.log(sessionUser, "SESSION");
     if (!sessionUser || !sessionUser.userId) {
-      throw new Response("User Id is required !", { status: 401 });
+      throw  Response("User Id is required !", { status: 401 });
     }
 
     const { userId } = sessionUser;
@@ -81,13 +81,6 @@ export const POST = async (request) => {
       //   `data:image/png;bas64,${imageBase64}`,
       //   {
       //     folder: "propertypulse",
-      //   }
-      // );
-      // const result = await cloudinary.uploader.upload(
-      //   `data:image/png;bas64,${imageBase64}`,
-      //   { public_id: "olympic_flag" },
-      //   function (error, result) {
-      //     console.log(result);
       //   }
       // );
       //return new Response(`data:image/png;bas64,${imageBase64}`);
