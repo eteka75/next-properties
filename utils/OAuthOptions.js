@@ -49,7 +49,6 @@ export const authOptions = {
       // 2. Assign user id to the session
       session.user.id = user._id.toString();
       // 3. Return Session
-      console.error("YEsss___________________Yess____", user._id.toString());
       return session;
     },
   },

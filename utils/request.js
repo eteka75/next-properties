@@ -31,16 +31,11 @@ async function fetchSingleProperty(id) {
       return null;
     }
     let uri = `${apiDomaine}/property/${id}`;
-    // let uri = "http://localhost:3000/api/property/662bb70e10ef09c8e7afa300";
-    console.log("UUUUUUUUUUUUUUURI", uri);
     const response = await fetch(uri);
     const responseBody = await response.json();
-
     if (!response.ok) {
       throw new Error("Failed to load data");
-      return;
     }
-    // console.log(responseBody);
     return responseBody;
   } catch (error) {
     console.error(error);

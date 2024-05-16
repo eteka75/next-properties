@@ -12,9 +12,9 @@ export const GET = async (request) => {
     await connecteDB();
     const properties = await Property.find({});
 
-    return  Response.json(properties);
+    return Response.json(properties);
   } catch (error) {
-    return  Response("Sommething was wrong !", { status: 500 });
+    return Response("Sommething was wrong !", { status: 500 });
   }
 };
 
@@ -24,7 +24,7 @@ export const POST = async (request) => {
     const sessionUser = await getSessionUser();
     console.log(sessionUser, "SESSION");
     if (!sessionUser || !sessionUser.userId) {
-      throw  Response("User Id is required !", { status: 401 });
+      throw Response("User Id is required !", { status: 401 });
     }
 
     const { userId } = sessionUser;
@@ -69,27 +69,27 @@ export const POST = async (request) => {
     const uploadedImages = await saveImagesLocally(images);
     propertyData.images = uploadedImages;
 
-    for (const image of images) {
-      // const imageBuffuer = await image.arrayBuffer();
-      // const imageArray = Array.from(new Uint8Array(imageBuffuer));
-      // const imageData = Buffer.from(imageArray);
-      //Convert image to base6
-      //const imageBase64 = imageData.toString("base64");
-      // Convert  request to upload to Cloudinary
-      //const result = null;
-      // const result = await cloudinary.uploader.upload(
-      //   `data:image/png;bas64,${imageBase64}`,
-      //   {
-      //     folder: "propertypulse",
-      //   }
-      // );
-      //return new Response(`data:image/png;bas64,${imageBase64}`);
-      //imageUplaodPromises.push(result?.secure_url);
-      // Wait for all images uploads
-      //const uploadedImages = await Promise.all(imageUplaodPromises);
-      // And add images to the propertyData object
-      //propertyData.images = uploadedImages;
-    }
+    //for (const image of images) {
+    // const imageBuffuer = await image.arrayBuffer();
+    // const imageArray = Array.from(new Uint8Array(imageBuffuer));
+    // const imageData = Buffer.from(imageArray);
+    //Convert image to base6
+    //const imageBase64 = imageData.toString("base64");
+    // Convert  request to upload to Cloudinary
+    //const result = null;
+    // const result = await cloudinary.uploader.upload(
+    //   `data:image/png;bas64,${imageBase64}`,
+    //   {
+    //     folder: "propertypulse",
+    //   }
+    // );
+    //return new Response(`data:image/png;bas64,${imageBase64}`);
+    //imageUplaodPromises.push(result?.secure_url);
+    // Wait for all images uploads
+    //const uploadedImages = await Promise.all(imageUplaodPromises);
+    // And add images to the propertyData object
+    //propertyData.images = uploadedImages;
+    // }
 
     const newProperty = new Property(propertyData);
     await newProperty.save();
