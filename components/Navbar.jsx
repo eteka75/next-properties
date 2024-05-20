@@ -25,7 +25,7 @@ function Navbar() {
 
   const profileImage = session?.user?.image;
 
-  console.log("CLIENT_FETCH_ERROR", providers);
+  //console.log("CLIENT_FETCH_ERROR", providers);
   return (
     <nav className="bg-blue-700 border-b border-blue-500">
       <div className="mx-auto container px-2 sm:px-6 lg:px-8">
@@ -87,7 +87,8 @@ function Navbar() {
                 >
                   Properties
                 </Link>
-                {session && (
+
+                {session && session.user && (
                   <Link
                     href="/property/add"
                     className={`${
@@ -246,15 +247,17 @@ function Navbar() {
             >
               Properties
             </Link>
-            <Link
-              href="/property/add"
-              className={`${
-                pathname === "/property/add" ? "bg-gray-900" : ""
-              } text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Add Property
-            </Link>
+            {session && session.user && (
+              <Link
+                href="/property/add"
+                className={`${
+                  pathname === "/property/add" ? "bg-gray-900" : ""
+                } text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Add Property
+              </Link>
+            )}
             {!session &&
               providers &&
               Object.values(providers).map((provider, index) => (

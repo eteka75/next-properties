@@ -9,6 +9,7 @@ import PropertyDetails from "@/components/PropertyDetails";
 import { FaArrowLeft, FaBookmark, FaShare, FaShareAlt } from "react-icons/fa";
 import Spinner from "@/components/Spinner";
 import { revalidatePath } from "next/cache";
+import PropertyImages from "@/components/PropertyImages";
 
 const PropertyPage = async () => {
   const { id } = useParams();
@@ -158,6 +159,7 @@ const PropertyPage = async () => {
               </div>
             </div>
           </section>
+          <PropertyImages images={property.images} />
         </>
       )}
     </>

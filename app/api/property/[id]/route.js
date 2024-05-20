@@ -15,7 +15,7 @@ export const GET = async (request, { params }) => {
       status: 200,
     });
   } catch (error) {
-    console.log(error);
+    console.log("ERREUR DE CHARGEMENT", error);
     return new Response("Sommething was wrong !", { status: 500 });
   }
 };

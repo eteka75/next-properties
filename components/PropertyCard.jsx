@@ -20,16 +20,17 @@ const PropertyCard = ({ property }) => {
       return `${rates.nightly.toLocaleString()}/night`;
     }
   };
+  const HOME_URL = process.env.NEXT_PUBLIC_IP;
   return (
     <div className="bg-white rounded-xl shadow-md relative">
       <Link href={`/property/${property?._id}`}>
         <Image
-          src={`/images/properties/${property?.images[0]}`}
+          src={`${HOME_URL}/${property?.images[0]}`}
           alt={property.name}
           width={0}
           height={0}
           sizes="100vw"
-          className="object-cover w-full h-auto rounded-t-xl"
+          className="object-cover object-top w-full h-[300px] rounded-t-xl"
         />
       </Link>
       <div className="p-4">
