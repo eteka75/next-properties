@@ -3,7 +3,6 @@ import React from "react";
 
 const PropertyImages = ({ images }) => {
   let url = process.env.NEXT_PUBLIC_DOMAINE + "/";
-  console.log("images.length", images.length);
   return (
     <section className="bg-blue-50 pb-10">
       <div className="container   m-auto px-6">
