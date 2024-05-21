@@ -1,8 +1,15 @@
 "use client";
+import { fetchSingleProperty } from "@/utils/request";
+import { useParams, useRouter } from "next/navigation";
+//import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-const PropertyAddForm = () => {
+const PropertyEditForm = () => {
   const [mounted, setMounted] = useState(false);
+  const { id } = useParams();
+  const router = useRouter();
+
   const [fields, setFields] = useState({
     name: "test Appartement",
     type: "Apartment",
@@ -10,7 +17,7 @@ const PropertyAddForm = () => {
     location: {
       street: "",
       city: "Test City",
-      state: "MA",
+      state: "",
       zipcode: "",
     },
     beds: 2,
@@ -25,10 +32,33 @@ const PropertyAddForm = () => {
     },
     images: [],
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setMounted(true);
-  });
+    FetchPropertyData();
+  }, [id]);
+  const FetchPropertyData = async () => {
+    try {
+      const propertyData = await fetchSingleProperty(id);
+
+      if (propertyData && propertyData.rates) {
+        const defaultRates = { ...propertyData?.rates };
+        for (const rate in defaultRates) {
+          if (defaultRates[rate] === null) {
+            defaultRates[rate] = "";
+          }
+        }
+        propertyData.rates = defaultRates;
+      }
+      setFields(propertyData);
+    } catch (error) {
+      toast.error("Erreur de chargement");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -52,6 +82,28 @@ const PropertyAddForm = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData(e.target);
+      console.log(formData);
+      const res = await fetch(`/api/property/${id}`, {
+        method: "PUT",
+        body: formData,
+      });
+      if (res.status === 200) {
+        toast.success("Sauvegarde effectuée");
+        router.push(`/property/${id}`);
+      } else if (res.status === 401 || res.status === 403) {
+        toast.error("Permission denied");
+      } else {
+        toast.error("Something went wrong !");
+      }
+    } catch (error) {
+      console.log("ERRRRRRRRRRRRRRRRRRRROR", error);
+      //toast.error("Erreur de sauvegarde");
+    }
+  };
   const handleAmenitiesChange = (e) => {
     const { value, checked } = e.target;
 
@@ -75,32 +127,12 @@ const PropertyAddForm = () => {
       amenities: updateAmenites,
     }));
   };
-  const handleImagesChange = (e) => {
-    const { files } = e.target;
 
-    // Clone images array
-    const updateImages = [...fields.images];
-
-    for (const file of files) {
-      updateImages.push(file);
-    }
-
-    // Update state with array of images
-    setFields((prevFields) => ({
-      ...prevFields,
-      images: updateImages,
-    }));
-    console.log(files);
-  };
   return (
     mounted && (
-      <form
-        action="/api/properties"
-        method="POST"
-        encType="multipart/form-data"
-      >
+      <form onSubmit={handleSubmit} method="PUT" encType="multipart/form-data">
         <h2 className="text-3xl text-center font-semibold mb-6">
-          Add Property
+          Edit Property
         </h2>
 
         <div className="mb-4">
@@ -545,31 +577,12 @@ const PropertyAddForm = () => {
           />
         </div>
 
-        <div className="mb-4">
-          <label
-            htmlFor="images"
-            className="block text-gray-700 font-bold mb-2"
-          >
-            Images (Select up to 4 images)
-          </label>
-          <input
-            type="file"
-            id="images"
-            name="images"
-            className="border rounded w-full py-2 px-3"
-            accept="image/*"
-            multiple
-            required
-            onChange={handleImagesChange}
-          />
-        </div>
-
         <div>
           <button
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
+            className="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Add Property
+            Update Property
           </button>
         </div>
       </form>
@@ -577,4 +590,4 @@ const PropertyAddForm = () => {
   );
 };
 
-export default PropertyAddForm;
+export default PropertyEditForm;

@@ -9,6 +9,10 @@ import {
 } from "react-icons/fa";
 
 const PropertyDetails = ({ property }) => {
+  const convertNl2br = (str) => {
+    if (typeof str !== "string") return str;
+    return str.replace(/\n/g, "<br/>");
+  };
   return (
     <main>
       <div className="bg-white p-6 rounded-lg shadow-md text-center md:text-left">
@@ -76,7 +80,13 @@ const PropertyDetails = ({ property }) => {
             <span className="hidden sm:inline">sqft</span>
           </p>
         </div>
-        <p className="text-gray-500 mb-4 text-center">{property.description}</p>
+        <p className="text-gray-500 my-4 text-start text-lg">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: convertNl2br(property.description),
+            }}
+          ></div>
+        </p>
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md mt-6">
